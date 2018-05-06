@@ -55,36 +55,47 @@ export const createStore = (reducer) => {
 }
 
 
+// export const combineReducers = (reducers) => {
+//
+//     /*
+//     * createStore(reducers)时，reducers就是下面这个返回的函数
+//     *   并且，在createStore(reducers)时是，会在内部自动执行
+//     *   其中state就是封装了所有的reducer中的state，以reducer函数名作为key的键值对
+//     * */
+//     return function (state={}, action) {
+//
+//         /*
+//         * 这个newState用于接收，state中，被改变后的新state
+//         *   最后将其返回，也就是createStore(reducers)得到的store对象
+//         * */
+//         let newState = {}
+//
+//         //获取reducers中，所有的reducer的函数名，放到数组中。
+//         const keys = Object.keys(reducers)
+//
+//         //进行遍历，执行每个reducer，以对应reducer的函数名作为key，新的state作为value，
+//         //放到newState对象中。
+//         keys.forEach(key => {
+//
+//             const childReducer = reducers[key]
+//             const childState = state[key]
+//             const newChildState = childReducer(childState, action)
+//
+//             newState[key] = newChildState
+//         })
+//
+//         return newState
+//     }
+// }
+
 export const combineReducers = (reducers) => {
 
-    /*
-    * createStore(reducers)时，reducers就是下面这个返回的函数
-    *   并且，在createStore(reducers)时是，会在内部自动执行
-    *   其中state就是封装了所有的reducer中的state，以reducer函数名作为key的键值对
-    * */
-    return function (state={}, action) {
+    return function (state = {}, action) {
 
-        /*
-        * 这个newState用于接收，state中，被改变后的新state
-        *   最后将其返回，也就是createStore(reducers)得到的store对象
-        * */
-        let newState = {}
-
-        //获取reducers中，所有的reducer的函数名，放到数组中。
-        const keys = Object.keys(reducers)
-
-        //进行遍历，执行每个reducer，以对应reducer的函数名作为key，新的state作为value，
-        //放到newState对象中。
-        keys.forEach(key => {
-
-            const childReducer = reducers[key]
-            const childState = state[key]
-            const newChildState = childReducer(childState, action)
-
-            newState[key] = newChildState
-        })
-
-        return newState
+        Object.keys(reducers).reduce((newState, reducerName) => {
+            newState[reducerName] = reducers[reducerName](state[reducerName], action)
+            return newState
+        }, {})
     }
 }
 
