@@ -1,12 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+// import {Provider} from 'react-redux'
+import {Provider} from './libs/mini_react-redux'
 
 import store from './redux/store'
 import App from './components/app'
 
-function render() {
-    ReactDOM.render(<App store={store}/>, document.getElementById('root'))
-}
-render()
-
-store.subscribe(render)
+ReactDOM.render((
+    <Provider store={store}>
+        <App/>
+    </Provider>
+), document.getElementById('root'))

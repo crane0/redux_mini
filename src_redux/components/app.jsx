@@ -1,29 +1,27 @@
 import React, {Component} from 'react'
-// import {connect} from 'react-redux'
-import {connect} from '../libs/mini_react-redux'
 import {add, minus, add_msg} from '../redux/actions'
 
-class App extends Component {
+export default class App extends Component {
 
     //+是因为获取的是string类型，要参数计算，所以变为number类型
     //直接添加
     add = () => {
         const selected = +this.refs.optionValue.value
-        this.props.add(selected)
+        this.props.store.dispatch(add(selected))
     }
 
     //减少
     minus = () => {
         const selected = +this.refs.optionValue.value
-        this.props.minus(selected)
+        this.props.store.dispatch(minus(selected))
     }
 
     //奇数时添加
     oddAdd = () => {
         const selected = +this.refs.optionValue.value
-        let num = this.props.num
+        let num = this.props.store.getState().num
         if(num%2 !== 0){
-            this.props.add(selected)
+            this.props.store.dispatch(add(selected))
         }
     }
 
@@ -31,7 +29,7 @@ class App extends Component {
     asyncAdd = () => {
         const selected = +this.refs.optionValue.value
         setTimeout(() => {
-            this.props.add(selected)
+            this.props.store.dispatch(add(selected))
         },1000)
 
     }
@@ -40,12 +38,12 @@ class App extends Component {
     //添加到列表中
     addToUl = () => {
         const msg = this.input.value
-        this.props.add_msg(msg)
+        this.props.store.dispatch(add_msg(msg))
     }
 
     render() {
 
-        const {num, msgs} = this.props
+        const {num, msgs} = this.props.store.getState()
 
         return (
             <div>
@@ -73,8 +71,3 @@ class App extends Component {
         )
     }
 }
-
-export default connect(
-    state => ({num: state.num, msgs: state.msgs}),
-    {add, minus, add_msg}
-)(App)

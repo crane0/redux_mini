@@ -1,4 +1,5 @@
-import {createStore} from 'redux'
+// import {createStore} from 'redux'
+import {createStore} from '../libs/mini_redux'
 
 import reducers from './reducers'
 
