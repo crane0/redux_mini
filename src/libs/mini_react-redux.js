@@ -79,6 +79,16 @@ export class Provider extends Component {
 //     }
 // })
 
+//mapStateToProps: state => ({count: state.count, msgs: state.msgs})
+//mapDispatchToProps:  {increment, decrement, addMsg}
+
+//function increment(number) {
+//  return {type:'INCREMENT', data: number}
+//}
+//function increment (...args) {
+//  store.dispatch(increment(...args))
+//}
+
 export function connect(mapStateToProps = state => ({}), mapDispatchToProps = {}) {
 
     // 返回一个函数, 接收一个UI组件, 返回一个容器组件
@@ -99,6 +109,7 @@ export function connect(mapStateToProps = state => ({}), mapDispatchToProps = {}
                 const stateProps = mapStateToProps(context.store.getState())
 
                 //放在容器组件的state上，是因为方便更新
+				//因为初始化状态只有一次，如果不绑定在state上，就不能实时更新了
                 this.state = stateProps
 
                 /*
